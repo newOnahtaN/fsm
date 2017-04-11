@@ -48,17 +48,17 @@ SelfLink.prototype.getEndPointsAndCircle = function() {
 };
 
 SelfLink.prototype.draw = function(c) {
-	var stuff = this.getEndPointsAndCircle();
-	// draw arc
-	c.beginPath();
-	c.arc(stuff.circleX, stuff.circleY, stuff.circleRadius, stuff.startAngle, stuff.endAngle, false);
-	c.stroke();
-	// draw the text on the loop farthest from the node
-	var textX = stuff.circleX + stuff.circleRadius * Math.cos(this.anchorAngle);
-	var textY = stuff.circleY + stuff.circleRadius * Math.sin(this.anchorAngle);
-	drawText(c, this.text, textX, textY, this.anchorAngle, selectedObject == this);
-	// draw the head of the arrow
-	drawArrow(c, stuff.endX, stuff.endY, stuff.endAngle + Math.PI * 0.4);
+	// var stuff = this.getEndPointsAndCircle();
+	// // draw arc
+	// c.beginPath();
+	// c.arc(stuff.circleX, stuff.circleY, stuff.circleRadius, stuff.startAngle, stuff.endAngle, false);
+	// c.stroke();
+	// // draw the text on the loop farthest from the node
+	// var textX = stuff.circleX + stuff.circleRadius * Math.cos(this.anchorAngle);
+	// var textY = stuff.circleY + stuff.circleRadius * Math.sin(this.anchorAngle);
+	// drawText(c, this.text, textX, textY, this.anchorAngle, selectedObject == this);
+	// // draw the head of the arrow
+	// drawArrow(c, stuff.endX, stuff.endY, stuff.endAngle + Math.PI * 0.4);
 };
 
 SelfLink.prototype.containsPoint = function(x, y) {
