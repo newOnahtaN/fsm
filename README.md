@@ -1,3 +1,5 @@
-# Finite State Machine Designer
+# Reliability Block Diagram Designer
 
-http://madebyevan.com/fsm/
+Made by Nathan Owen, based on [fsm by Evan Wallace](http://madebyevan.com/fsm/)
+
+
