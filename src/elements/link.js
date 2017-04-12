@@ -33,55 +33,63 @@ Link.prototype.setAnchorPoint = function(x, y) {
 };
 
 Link.prototype.getEndPointsAndCircle = function() {
-	if(this.perpendicularPart == 0) {
-		var midX = (this.nodeA.x + this.nodeB.x) / 2;
-		var midY = (this.nodeA.y + this.nodeB.y) / 2;
-		var start = this.nodeA.closestPointOnCircle(midX, midY);
-		var end = this.nodeB.closestPointOnCircle(midX, midY);
-		return {
+
+	var midX = (this.nodeA.x + this.nodeB.x) / 2;
+	var midY = (this.nodeA.y + this.nodeB.y) / 2;
+	var start = this.nodeA.closestPointOnCircle(midX, midY);
+    var end = this.nodeB.closestPointOnCircle(midX, midY);
+    return {
 			'hasCircle': false,
 			'startX': start.x,
 			'startY': start.y,
 			'endX': end.x,
 			'endY': end.y,
-		};
-	}
-	var anchor = this.getAnchorPoint();
-	var circle = circleFromThreePoints(this.nodeA.x, this.nodeA.y, this.nodeB.x, this.nodeB.y, anchor.x, anchor.y);
-	var isReversed = (this.perpendicularPart > 0);
-	var reverseScale = isReversed ? 1 : -1;
-	var startAngle = Math.atan2(this.nodeA.y - circle.y, this.nodeA.x - circle.x) - reverseScale * nodeRadius / circle.radius;
-	var endAngle = Math.atan2(this.nodeB.y - circle.y, this.nodeB.x - circle.x) + reverseScale * nodeRadius / circle.radius;
-	var startX = circle.x + circle.radius * Math.cos(startAngle);
-	var startY = circle.y + circle.radius * Math.sin(startAngle);
-	var endX = circle.x + circle.radius * Math.cos(endAngle);
-	var endY = circle.y + circle.radius * Math.sin(endAngle);
-	return {
-		'hasCircle': true,
-		'startX': startX,
-		'startY': startY,
-		'endX': endX,
-		'endY': endY,
-		'startAngle': startAngle,
-		'endAngle': endAngle,
-		'circleX': circle.x,
-		'circleY': circle.y,
-		'circleRadius': circle.radius,
-		'reverseScale': reverseScale,
-		'isReversed': isReversed,
 	};
+	// if(this.perpendicularPart == 0) {
+	// 	return {
+	// 		'hasCircle': false,
+	// 		'startX': start.x,
+	// 		'startY': start.y,
+	// 		'endX': end.x,
+	// 		'endY': end.y,
+	// 	};
+	// }
+	// var anchor = this.getAnchorPoint();
+	// var circle = circleFromThreePoints(this.nodeA.x, this.nodeA.y, this.nodeB.x, this.nodeB.y, anchor.x, anchor.y);
+	// var isReversed = (this.perpendicularPart > 0);
+	// var reverseScale = isReversed ? 1 : -1;
+	// var startAngle = Math.atan2(this.nodeA.y - circle.y, this.nodeA.x - circle.x) - reverseScale * nodeRadius / circle.radius;
+	// var endAngle = Math.atan2(this.nodeB.y - circle.y, this.nodeB.x - circle.x) + reverseScale * nodeRadius / circle.radius;
+	// // var startX = circle.x + circle.radius * Math.cos(startAngle);
+	// // var startY = circle.y + circle.radius * Math.sin(startAngle);
+	// // var endX = circle.x + circle.radius * Math.cos(endAngle);
+	// // var endY = circle.y + circle.radius * Math.sin(endAngle);
+	// return {
+	// 	'hasCircle': true,
+	// 	'startX': start.x,
+	// 	'startY': start.y,
+	// 	'endX': end.x,
+	// 	'endY': end.y,
+	// 	'startAngle': startAngle,
+	// 	'endAngle': endAngle,
+	// 	'circleX': circle.x,
+	// 	'circleY': circle.y,
+	// 	'circleRadius': circle.radius,
+	// 	'reverseScale': reverseScale,
+	// 	'isReversed': isReversed,
+	// };
 };
 
 Link.prototype.draw = function(c) {
 	var stuff = this.getEndPointsAndCircle();
 	// draw arc
 	c.beginPath();
-	if(stuff.hasCircle) {
-		c.arc(stuff.circleX, stuff.circleY, stuff.circleRadius, stuff.startAngle, stuff.endAngle, stuff.isReversed);
-	} else {
-		c.moveTo(stuff.startX, stuff.startY);
-		c.lineTo(stuff.endX, stuff.endY);
-	}
+	// if(stuff.hasCircle) {
+	// 	c.arc(stuff.circleX, stuff.circleY, stuff.circleRadius, stuff.startAngle, stuff.endAngle, stuff.isReversed);
+	// } else {
+	c.moveTo(stuff.startX, stuff.startY);
+	c.lineTo(stuff.endX, stuff.endY);
+	// }
 	c.stroke();
 	// draw the head of the arrow
 	if(stuff.hasCircle) {

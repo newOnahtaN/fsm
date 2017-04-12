@@ -206,10 +206,11 @@ window.onload = function() {
 			nodes.push(selectedObject);
 			resetCaret();
 			draw();
-		} else if(selectedObject instanceof Node) {
-			selectedObject.isAcceptState = !selectedObject.isAcceptState;
-			draw();
-		}
+		} 
+		// else if(selectedObject instanceof Node) {
+		// 	selectedObject.isAcceptState = !selectedObject.isAcceptState;
+		// 	draw();
+		// }
 	};
 
 	canvas.onmousemove = function(e) {
