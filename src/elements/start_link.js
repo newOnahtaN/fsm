@@ -3,6 +3,7 @@ function StartLink(node, start) {
 	this.deltaX = 0;
 	this.deltaY = 0;
 	this.text = '';
+	this.isAngled = true;
 
 	if(start) {
 		this.setAnchorPoint(start.x, start.y);
@@ -25,12 +26,18 @@ StartLink.prototype.setAnchorPoint = function(x, y) {
 StartLink.prototype.getEndPoints = function() {
 	var startX = this.node.x + this.deltaX;
 	var startY = this.node.y + this.deltaY;
-	var end = this.node.lateralPointOnSquare(startX, startY);
+	if (this.isAngled){
+	    var end = this.node.lateralPointOnSquare(startX, startY);
+	} else {
+	    var end = this.node.intersectPointOnSquare(startX, startY);
+	}
 	return {
 		'startX': startX,
 		'startY': startY,
 		'endX': end.x,
 		'endY': end.y,
+		'midX': (startX+end.x)/2,
+		'midY': (startY+end.y)/2,
 	};
 };
 
@@ -40,7 +47,13 @@ StartLink.prototype.draw = function(c) {
 	// draw the line
 	c.beginPath();
 	c.moveTo(stuff.startX, stuff.startY);
-	c.lineTo(stuff.endX, stuff.endY);
+	if(this.isAngled) {
+		c.lineTo(stuff.midX, stuff.startY);
+		c.lineTo(stuff.midX, stuff.endY);		
+		c.lineTo(stuff.endX, stuff.endY);
+	} else {
+		c.lineTo(stuff.endX, stuff.endY);
+	}
 	c.stroke();
 
 	// draw the text at the end without the arrow

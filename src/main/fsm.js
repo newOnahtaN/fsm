@@ -206,7 +206,8 @@ window.onload = function() {
 			nodes.push(selectedObject);
 			resetCaret();
 			draw();
-		} else if (selectedObject instanceof Link){
+		} else if (selectedObject instanceof Link || selectedObject instanceof StartLink){
+			console.log("yup");
 			selectedObject.isAngled = !selectedObject.isAngled;
 			draw();
 		}

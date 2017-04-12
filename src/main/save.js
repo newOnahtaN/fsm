@@ -25,12 +25,14 @@ function restoreBackup() {
 				link.deltaX = backupLink.deltaX;
 				link.deltaY = backupLink.deltaY;
 				link.text = backupLink.text;
+				link.isAngled = backupLink.isAngled;
 			} else if(backupLink.type == 'Link') {
 				link = new Link(nodes[backupLink.nodeA], nodes[backupLink.nodeB]);
 				link.parallelPart = backupLink.parallelPart;
 				link.perpendicularPart = backupLink.perpendicularPart;
 				link.text = backupLink.text;
 				link.lineAngleAdjust = backupLink.lineAngleAdjust;
+				link.isAngled = backupLink.isAngled;
 			}
 			if(link != null) {
 				links.push(link);
@@ -77,6 +79,7 @@ function saveBackup() {
 				'text': link.text,
 				'deltaX': link.deltaX,
 				'deltaY': link.deltaY,
+				'isAngled': link.isAngled,
 			};
 		} else if(link instanceof Link) {
 			backupLink = {
@@ -87,6 +90,7 @@ function saveBackup() {
 				'lineAngleAdjust': link.lineAngleAdjust,
 				'parallelPart': link.parallelPart,
 				'perpendicularPart': link.perpendicularPart,
+				'isAngled': link.isAngled,
 			};
 		}
 		if(backupLink != null) {

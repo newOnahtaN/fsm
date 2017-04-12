@@ -50,6 +50,8 @@ Link.prototype.getEndPointsAndCircle = function() {
 			'startY': start.y,
 			'endX': end.x,
 			'endY': end.y,
+			'midX': midX,
+			'midY': midY,
 	};
 	// if(this.perpendicularPart == 0) {
 	// 	return {
@@ -90,12 +92,14 @@ Link.prototype.draw = function(c) {
 	var stuff = this.getEndPointsAndCircle();
 	// draw arc
 	c.beginPath();
-	// if(stuff.hasCircle) {
-	// 	c.arc(stuff.circleX, stuff.circleY, stuff.circleRadius, stuff.startAngle, stuff.endAngle, stuff.isReversed);
-	// } else {
 	c.moveTo(stuff.startX, stuff.startY);
-	c.lineTo(stuff.endX, stuff.endY);
-	// }
+	if(this.isAngled) {
+		c.lineTo(stuff.midX, stuff.startY);
+		c.lineTo(stuff.midX, stuff.endY);		
+		c.lineTo(stuff.endX, stuff.endY);
+	} else {
+		c.lineTo(stuff.endX, stuff.endY);
+	}
 	c.stroke();
 	// draw the head of the arrow
 	if(stuff.hasCircle) {
@@ -124,6 +128,7 @@ Link.prototype.draw = function(c) {
 
 Link.prototype.containsPoint = function(x, y) {
 	var stuff = this.getEndPointsAndCircle();
+	if (this.isAngled) hitTargetPadding = 20;
 	if(stuff.hasCircle) {
 		var dx = x - stuff.circleX;
 		var dy = y - stuff.circleY;
