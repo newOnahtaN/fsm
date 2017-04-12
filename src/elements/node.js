@@ -20,7 +20,8 @@ Node.prototype.setAnchorPoint = function(x, y) {
 Node.prototype.draw = function(c) {
 	// draw the circle
 	c.beginPath();
-	c.arc(this.x, this.y, nodeRadius, 0, 2 * Math.PI, false);
+	// c.arc(this.x, this.y, nodeRadius, 0, 2 * Math.PI, false);
+	c.rect(this.x-nodeRadius, this.y-nodeRadius, nodeRadius*2, nodeRadius*2)
 	c.stroke();
 
 	// draw the text
@@ -47,7 +48,7 @@ Node.prototype.draw = function(c) {
 Node.prototype.closestPointOnCircle = function(x, y) {
 	var sign = (this.x < x) ? 1 : -1;
 	return {
-		'x': this.x + (sign*30),
+		'x': this.x + (sign*nodeRadius),
 		'y': this.y,
 	};
 };

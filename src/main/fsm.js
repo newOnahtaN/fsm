@@ -90,7 +90,7 @@ function resetCaret() {
 }
 
 var canvas;
-var nodeRadius = 30;
+var nodeRadius = 20;
 var nodes = [];
 var links = [];
 

@@ -28,7 +28,7 @@ function ExportAsLaTeX() {
 		y *= this._scale;
 		radius *= this._scale;
 		if(endAngle - startAngle == Math.PI * 2) {
-			this._texData += '\\draw [' + this.strokeStyle + '] (' + fixed(x-3, 3) + ',' + fixed(-y-3, 3) + ') rectangle (' + fixed(x+3, 3) + ',' + fixed(-y+3, 3) + ');\n';
+			this._texData += '\\draw [' + this.strokeStyle + '] (' + fixed(x-radius, 3) + ',' + fixed(-y-radius, 3) + ') rectangle (' + fixed(x+radius, 3) + ',' + fixed(-y+radius, 3) + ');\n';
 		} else {
 			if(isReversed) {
 				var temp = startAngle;
@@ -50,6 +50,13 @@ function ExportAsLaTeX() {
 			endAngle = -endAngle;
 			this._texData += '\\draw [' + this.strokeStyle + '] (' + fixed(x + radius * Math.cos(startAngle), 3) + ',' + fixed(-y + radius * Math.sin(startAngle), 3) + ') arc (' + fixed(startAngle * 180 / Math.PI, 5) + ':' + fixed(endAngle * 180 / Math.PI, 5) + ':' + fixed(radius, 3) + ');\n';
 		}
+	};
+	this.rect = function(x, y, width, height) {
+		x *= this._scale;
+		y *= this._scale;
+		width *= this._scale;
+		height *= this._scale;
+		this._texData += '\\draw [' + this.strokeStyle + '] (' + fixed(x, 3) + ',' + fixed(-y-height, 3) + ') rectangle (' + fixed(x+width, 3) + ',' + fixed(-y, 3) + ');\n';
 	};
 	this.moveTo = this.lineTo = function(x, y) {
 		x *= this._scale;
