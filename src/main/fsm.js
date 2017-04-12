@@ -206,7 +206,10 @@ window.onload = function() {
 			nodes.push(selectedObject);
 			resetCaret();
 			draw();
-		} 
+		} else if (selectedObject instanceof Link){
+			selectedObject.isAngled = !selectedObject.isAngled;
+			draw();
+		}
 		// else if(selectedObject instanceof Node) {
 		// 	selectedObject.isAcceptState = !selectedObject.isAcceptState;
 		// 	draw();
@@ -234,7 +237,7 @@ window.onload = function() {
 				} else if(targetNode != null) {
 					currentLink = new Link(selectedObject, targetNode);
 				} else {
-					currentLink = new TemporaryLink(selectedObject.closestPointOnCircle(mouse.x, mouse.y), mouse);
+					currentLink = new TemporaryLink(selectedObject.lateralPointOnSquare(mouse.x, mouse.y), mouse);
 				}
 			}
 			draw();

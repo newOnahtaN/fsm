@@ -2,6 +2,7 @@ function Link(a, b) {
 	this.nodeA = a;
 	this.nodeB = b;
 	this.text = '';
+	this.isAngled = true;
 	this.lineAngleAdjust = 0; // value to add to textAngle when link is straight line
 
 	// make anchor point relative to the locations of nodeA and nodeB
@@ -36,8 +37,13 @@ Link.prototype.getEndPointsAndCircle = function() {
 
 	var midX = (this.nodeA.x + this.nodeB.x) / 2;
 	var midY = (this.nodeA.y + this.nodeB.y) / 2;
-	var start = this.nodeA.closestPointOnCircle(midX, midY);
-    var end = this.nodeB.closestPointOnCircle(midX, midY);
+	if (this.isAngled){
+		var start = this.nodeA.lateralPointOnSquare(midX, midY);
+	    var end = this.nodeB.lateralPointOnSquare(midX, midY);
+	} else {
+		var start = this.nodeA.intersectPointOnSquare(midX, midY);
+	    var end = this.nodeB.intersectPointOnSquare(midX, midY);
+	}
     return {
 			'hasCircle': false,
 			'startX': start.x,

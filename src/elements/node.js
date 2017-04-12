@@ -45,11 +45,46 @@ Node.prototype.draw = function(c) {
 // 	};
 // };
 
-Node.prototype.closestPointOnCircle = function(x, y) {
-	var sign = (this.x < x) ? 1 : -1;
+Node.prototype.intersectPointOnSquare = function(x, y) {
+	normx = x - this.x;
+	normy = y - this.y;
+	slope = (x-this.x)/(y-this.y);
+	if (normx > 0 && -normx <= normy && normy <= normx){ //right
+		retx = this.x + nodeRadius;
+		rety = slope*(retx - this.x) - this.y
+	} else if (normx < 0 && normx <= normy && normy <= -normx){ //left
+		retx = this.x - nodeRadius;
+		rety = slope*(retx - this.x) - this.y
+	} else if (normy > 0 && -normy < normx && normx < normy){ //top
+		rety = this.y + nodeRadius;
+		retx = (rety - this.y + slope*this.x)/slope
+	} else if (normy < 0 && normy < normx && normx < -normy){ //bottom
+		rety = this.y - nodeRadius;
+		retx = (rety - this.y + slope*this.x)/slope
+	}
 	return {
-		'x': this.x + (sign*nodeRadius),
-		'y': this.y,
+		'x': retx,
+		'y': rety,
+	};
+};
+
+Node.prototype.lateralPointOnSquare = function(x, y) {
+	var closex = this.x;
+	var closey = this.y;
+
+	if (x < this.x - nodeRadius){
+		closex = this.x - nodeRadius;
+	} else if (x > this.x + nodeRadius){
+		closex = this.x + nodeRadius;
+	} else if (y < this.y){
+		closey = this.y - nodeRadius
+	} else if (y > this.y){
+		closey = this.y + nodeRadius
+	}
+
+	return {
+		'x': closex,
+		'y': closey,
 	};
 };
 

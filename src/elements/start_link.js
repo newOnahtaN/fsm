@@ -25,7 +25,7 @@ StartLink.prototype.setAnchorPoint = function(x, y) {
 StartLink.prototype.getEndPoints = function() {
 	var startX = this.node.x + this.deltaX;
 	var startY = this.node.y + this.deltaY;
-	var end = this.node.closestPointOnCircle(startX, startY);
+	var end = this.node.lateralPointOnSquare(startX, startY);
 	return {
 		'startX': startX,
 		'startY': startY,
