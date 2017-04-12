@@ -46,21 +46,29 @@ Node.prototype.draw = function(c) {
 // };
 
 Node.prototype.intersectPointOnSquare = function(x, y) {
-	normx = x - this.x;
-	normy = y - this.y;
-	slope = (x-this.x)/(y-this.y);
-	if (normx > 0 && -normx <= normy && normy <= normx){ //right
-		retx = this.x + nodeRadius;
-		rety = slope*(retx - this.x) - this.y
-	} else if (normx < 0 && normx <= normy && normy <= -normx){ //left
-		retx = this.x - nodeRadius;
-		rety = slope*(retx - this.x) - this.y
-	} else if (normy > 0 && -normy < normx && normx < normy){ //top
-		rety = this.y + nodeRadius;
-		retx = (rety - this.y + slope*this.x)/slope
-	} else if (normy < 0 && normy < normx && normx < -normy){ //bottom
-		rety = this.y - nodeRadius;
-		retx = (rety - this.y + slope*this.x)/slope
+	if (this.x == x){
+		retx = this.x;
+		rety = (y > this.y) ? this.y + nodeRadius : this.y - nodeRadius;
+	} else {
+		this.y = -this.y,  y = -y;
+		normx = x - this.x;
+		normy = y - this.y;
+		slope = (y-this.y)/(x-this.x);
+		
+		if (normx > 0 && (-normx <= normy) && (normy <= normx)){ //right
+			retx = this.x + nodeRadius;
+			rety = slope*(retx - this.x) + this.y;
+		} else if (normx < 0 && (normx <= normy) && (normy <= -normx)){ //left
+			retx = this.x - nodeRadius;
+			rety = slope*(retx - this.x) + this.y;
+		} else if (normy > 0 && (-normy < normx) && (normx < normy)){ //top
+			rety = this.y + nodeRadius;
+			retx = (rety - this.y + slope*this.x)/slope;
+		} else if (normy < 0 && (normy < normx) && (normx < -normy)){ //bottom
+			rety = this.y - nodeRadius;
+			retx = (rety - this.y + slope*this.x)/slope;
+		}
+		this.y = -this.y,  rety = -rety;
 	}
 	return {
 		'x': retx,

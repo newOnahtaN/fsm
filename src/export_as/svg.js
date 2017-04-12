@@ -51,6 +51,12 @@ function ExportAsSVG() {
 			this._svgData += '"/>\n';
 		}
 	};
+	this.rect = function(x, y, width, height){
+		x += this._transX;
+		y += this._transY;
+		var style = 'stroke="' + this.strokeStyle + '" stroke-width="' + this.lineWidth + '" fill="none"';
+		this._svgData += '\t<rect ' + style + ' x="' + fixed(x, 3) + '" y="' + fixed(y, 3) + '" width="' + fixed(width, 3) + '" height="' + fixed(height, 3) + '"/>\n';
+	}
 	this.moveTo = this.lineTo = function(x, y) {
 		x += this._transX;
 		y += this._transY;

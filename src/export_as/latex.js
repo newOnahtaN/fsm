@@ -28,7 +28,7 @@ function ExportAsLaTeX() {
 		y *= this._scale;
 		radius *= this._scale;
 		if(endAngle - startAngle == Math.PI * 2) {
-			this._texData += '\\draw [' + this.strokeStyle + '] (' + fixed(x-radius, 3) + ',' + fixed(-y-radius, 3) + ') rectangle (' + fixed(x+radius, 3) + ',' + fixed(-y+radius, 3) + ');\n';
+			this._texData += '\\draw [' + this.strokeStyle + '] (' + fixed(x, 3) + ',' + fixed(-y, 3) + ') circle (' + fixed(radius, 3) + ');\n';
 		} else {
 			if(isReversed) {
 				var temp = startAngle;
