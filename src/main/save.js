@@ -1,5 +1,11 @@
 function restoreBackup() {
 	if(!localStorage || !JSON) {
+		startNode = new ExteriorNode(0, 0, true);
+		endNode = new ExteriorNode(100, 100, false);
+		nodes.push(startNode);
+		nodes.push(endNode);
+		resetCaret();
+		draw();
 		return;
 	}
 
