@@ -50,8 +50,8 @@ Link.prototype.getEndPointsAndCircle = function() {
 			'startY': start.y,
 			'endX': end.x,
 			'endY': end.y,
-			'midX': midX,
-			'midY': midY,
+			'midX': (start.x+end.x)/2,
+			'midY': (start.y+end.y)/2,
 	};
 	// if(this.perpendicularPart == 0) {
 	// 	return {

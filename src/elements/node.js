@@ -4,6 +4,7 @@ function Node(x, y) {
 	this.mouseOffsetX = 0;
 	this.mouseOffsetY = 0;
 	this.isAcceptState = false;
+	this.isJoint = false;
 	this.text = '';
 }
 
@@ -21,11 +22,17 @@ Node.prototype.draw = function(c) {
 	// draw the circle
 	c.beginPath();
 	// c.arc(this.x, this.y, nodeRadius, 0, 2 * Math.PI, false);
-	c.rect(this.x-nodeRadius, this.y-nodeRadius, nodeRadius*2, nodeRadius*2)
+	if (!this.isJoint){
+		c.rect(this.x-nodeRadius, this.y-nodeRadius, nodeRadius*2, nodeRadius*2)
+	} else {
+		c.rect(this.x-(nodeRadius/4), this.y-(nodeRadius/4), nodeRadius/2, nodeRadius/2)
+	}
 	c.stroke();
 
 	// draw the text
-	drawText(c, this.text, this.x, this.y, null, selectedObject == this);
+	if (!this.isJoint){
+		drawText(c, this.text, this.x, this.y, null, selectedObject == this);
+	}
 
 	// draw a double circle for an accept state
 	if(this.isAcceptState) {
@@ -46,7 +53,10 @@ Node.prototype.draw = function(c) {
 // };
 
 Node.prototype.intersectPointOnSquare = function(x, y) {
-	if (this.x == x){
+	if (this.isJoint) {
+		retx = this.x;
+		rety = this.y;
+	} else if (this.x == x){
 		retx = this.x;
 		rety = (y > this.y) ? this.y + nodeRadius : this.y - nodeRadius;
 	} else {
@@ -80,7 +90,8 @@ Node.prototype.lateralPointOnSquare = function(x, y) {
 	var closex = this.x;
 	var closey = this.y;
 
-	if (x < this.x - nodeRadius){
+	if (this.isJoint) {
+	} else if (x < this.x - nodeRadius){
 		closex = this.x - nodeRadius;
 	} else if (x > this.x + nodeRadius){
 		closex = this.x + nodeRadius;

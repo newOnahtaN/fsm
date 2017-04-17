@@ -211,10 +211,10 @@ window.onload = function() {
 			selectedObject.isAngled = !selectedObject.isAngled;
 			draw();
 		}
-		// else if(selectedObject instanceof Node) {
-		// 	selectedObject.isAcceptState = !selectedObject.isAcceptState;
-		// 	draw();
-		// }
+		else if(selectedObject instanceof Node) {
+			selectedObject.isJoint = !selectedObject.isJoint;
+			draw();
+		}
 	};
 
 	canvas.onmousemove = function(e) {

@@ -11,6 +11,7 @@ function restoreBackup() {
 			var node = new Node(backupNode.x, backupNode.y);
 			node.isAcceptState = backupNode.isAcceptState;
 			node.text = backupNode.text;
+			node.isJoint = backupNode.isJoint;
 			nodes.push(node);
 		}
 		for(var i = 0; i < backup.links.length; i++) {
@@ -59,6 +60,7 @@ function saveBackup() {
 			'y': node.y,
 			'text': node.text,
 			'isAcceptState': node.isAcceptState,
+			'isJoint' : node.isJoint,
 		};
 		backup.nodes.push(backupNode);
 	}
