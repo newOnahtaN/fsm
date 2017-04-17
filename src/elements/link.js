@@ -102,11 +102,7 @@ Link.prototype.draw = function(c) {
 	}
 	c.stroke();
 	// draw the head of the arrow
-	if(stuff.hasCircle) {
-		drawArrow(c, stuff.endX, stuff.endY, stuff.endAngle - stuff.reverseScale * (Math.PI / 2));
-	} else {
-		drawArrow(c, stuff.endX, stuff.endY, Math.atan2(stuff.endY - stuff.startY, stuff.endX - stuff.startX));
-	}
+
 	// draw the text
 	if(stuff.hasCircle) {
 		var startAngle = stuff.startAngle;

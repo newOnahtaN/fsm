@@ -31,13 +31,13 @@ function textToXML(text) {
 }
 
 function drawArrow(c, x, y, angle) {
-	// var dx = Math.cos(angle);
-	// var dy = Math.sin(angle);
-	// c.beginPath();
-	// c.moveTo(x, y);
-	// c.lineTo(x - 8 * dx + 5 * dy, y - 8 * dy - 5 * dx);
-	// c.lineTo(x - 8 * dx - 5 * dy, y - 8 * dy + 5 * dx);
-	// c.fill();
+	var dx = Math.cos(angle);
+	var dy = Math.sin(angle);
+	c.beginPath();
+	c.moveTo(x, y);
+	c.lineTo(x - 8, y - 5);
+	c.lineTo(x - 8, y + 5);
+	c.fill();
 }
 
 function canvasHasFocus() {
@@ -159,8 +159,16 @@ function snapNode(node) {
 	}
 }
 
+function createExteriorNodes(){
+	startNode = new ExteriorNode(35, 290, "startnode");
+	endNode = new ExteriorNode(765, 290, "endnode");
+	nodes.push(startNode);
+	nodes.push(endNode);
+};
+
 window.onload = function() {
 	canvas = document.getElementById('canvas');
+	createExteriorNodes();
 	restoreBackup();
 	draw();
 
@@ -171,7 +179,7 @@ window.onload = function() {
 		originalClick = mouse;
 
 		if(selectedObject != null) {
-			if(shift && selectedObject instanceof Node) {
+			if(shift && (selectedObject instanceof Node || selectedObject instanceof ExteriorNode)) {
 				currentLink = new SelfLink(selectedObject, mouse);
 			} else {
 				movingObject = true;
@@ -222,7 +230,7 @@ window.onload = function() {
 
 		if(currentLink != null) {
 			var targetNode = selectObject(mouse.x, mouse.y);
-			if(!(targetNode instanceof Node)) {
+			if(!(targetNode instanceof Node || targetNode instanceof ExteriorNode)) {
 				targetNode = null;
 			}
 
@@ -289,7 +297,7 @@ document.onkeydown = function(e) {
 		return false;
 	} else if(key == 46) { // delete key
 		if(selectedObject != null) {
-			for(var i = 0; i < nodes.length; i++) {
+			for(var i = 2; i < nodes.length; i++) {
 				if(nodes[i] == selectedObject) {
 					nodes.splice(i--, 1);
 				}

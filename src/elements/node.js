@@ -3,8 +3,8 @@ function Node(x, y) {
 	this.y = y;
 	this.mouseOffsetX = 0;
 	this.mouseOffsetY = 0;
-	this.isAcceptState = false;
 	this.isJoint = false;
+	this.position = "interiornode"
 	this.text = '';
 }
 
@@ -34,23 +34,7 @@ Node.prototype.draw = function(c) {
 		drawText(c, this.text, this.x, this.y, null, selectedObject == this);
 	}
 
-	// draw a double circle for an accept state
-	if(this.isAcceptState) {
-		c.beginPath();
-		c.arc(this.x, this.y, nodeRadius - 6, 0, 2 * Math.PI, false);
-		c.stroke();
-	}
 };
-
-// Node.prototype.closestPointOnCircle = function(x, y) {
-// 	var dx = x - this.x;
-// 	var dy = y - this.y;
-// 	var scale = Math.sqrt(dx * dx + dy * dy);
-// 	return {
-// 		'x': this.x + dx * nodeRadius / scale,
-// 		'y': this.y + dy * nodeRadius / scale,
-// 	};
-// };
 
 Node.prototype.intersectPointOnSquare = function(x, y) {
 	if (this.isJoint) {
