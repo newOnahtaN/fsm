@@ -53,44 +53,11 @@ Link.prototype.getEndPointsAndCircle = function() {
 			'midX': (start.x+end.x)/2,
 			'midY': (start.y+end.y)/2,
 	};
-	// if(this.perpendicularPart == 0) {
-	// 	return {
-	// 		'hasCircle': false,
-	// 		'startX': start.x,
-	// 		'startY': start.y,
-	// 		'endX': end.x,
-	// 		'endY': end.y,
-	// 	};
-	// }
-	// var anchor = this.getAnchorPoint();
-	// var circle = circleFromThreePoints(this.nodeA.x, this.nodeA.y, this.nodeB.x, this.nodeB.y, anchor.x, anchor.y);
-	// var isReversed = (this.perpendicularPart > 0);
-	// var reverseScale = isReversed ? 1 : -1;
-	// var startAngle = Math.atan2(this.nodeA.y - circle.y, this.nodeA.x - circle.x) - reverseScale * nodeRadius / circle.radius;
-	// var endAngle = Math.atan2(this.nodeB.y - circle.y, this.nodeB.x - circle.x) + reverseScale * nodeRadius / circle.radius;
-	// // var startX = circle.x + circle.radius * Math.cos(startAngle);
-	// // var startY = circle.y + circle.radius * Math.sin(startAngle);
-	// // var endX = circle.x + circle.radius * Math.cos(endAngle);
-	// // var endY = circle.y + circle.radius * Math.sin(endAngle);
-	// return {
-	// 	'hasCircle': true,
-	// 	'startX': start.x,
-	// 	'startY': start.y,
-	// 	'endX': end.x,
-	// 	'endY': end.y,
-	// 	'startAngle': startAngle,
-	// 	'endAngle': endAngle,
-	// 	'circleX': circle.x,
-	// 	'circleY': circle.y,
-	// 	'circleRadius': circle.radius,
-	// 	'reverseScale': reverseScale,
-	// 	'isReversed': isReversed,
-	// };
 };
 
 Link.prototype.draw = function(c) {
 	var stuff = this.getEndPointsAndCircle();
-	// draw arc
+	// draw lines
 	c.beginPath();
 	c.moveTo(stuff.startX, stuff.startY);
 	if(this.isAngled) {
@@ -101,7 +68,6 @@ Link.prototype.draw = function(c) {
 		c.lineTo(stuff.endX, stuff.endY);
 	}
 	c.stroke();
-	// draw the head of the arrow
 
 	// draw the text
 	if(stuff.hasCircle) {
@@ -122,39 +88,24 @@ Link.prototype.draw = function(c) {
 	}
 };
 
+inRangeofLine = function(x, y, x1, y1, x2, y2){ //determines if point (x,y) is in range of line between (x1,y1) (x2,y2)
+	var dx = x1 - x2;
+	var dy = y1 - y2;
+	var length = Math.sqrt(dx*dx + dy*dy);
+	var percent = (dx * (x - x2) + dy * (y - y2)) / (length * length);
+	var distance = (dx * (y - y2) - dy * (x - x2)) / length;
+	return (percent > 0 && percent < 1 && Math.abs(distance) < hitTargetPadding);
+}
+
 Link.prototype.containsPoint = function(x, y) {
 	var stuff = this.getEndPointsAndCircle();
-	if (this.isAngled) hitTargetPadding = 20;
-	if(stuff.hasCircle) {
-		var dx = x - stuff.circleX;
-		var dy = y - stuff.circleY;
-		var distance = Math.sqrt(dx*dx + dy*dy) - stuff.circleRadius;
-		if(Math.abs(distance) < hitTargetPadding) {
-			var angle = Math.atan2(dy, dx);
-			var startAngle = stuff.startAngle;
-			var endAngle = stuff.endAngle;
-			if(stuff.isReversed) {
-				var temp = startAngle;
-				startAngle = endAngle;
-				endAngle = temp;
-			}
-			if(endAngle < startAngle) {
-				endAngle += Math.PI * 2;
-			}
-			if(angle < startAngle) {
-				angle += Math.PI * 2;
-			} else if(angle > endAngle) {
-				angle -= Math.PI * 2;
-			}
-			return (angle > startAngle && angle < endAngle);
-		}
+	if(this.isAngled) {
+		nearFirst = inRangeofLine(x, y, stuff.midX, stuff.startY, stuff.startX, stuff.startY);
+		nearSecond = inRangeofLine(x, y, stuff.midX, stuff.endY, stuff.midX, stuff.startY);
+		nearThird = inRangeofLine(x, y, stuff.endX, stuff.endY, stuff.midX, stuff.endY);
+		return nearFirst || nearSecond || nearThird;
 	} else {
-		var dx = stuff.endX - stuff.startX;
-		var dy = stuff.endY - stuff.startY;
-		var length = Math.sqrt(dx*dx + dy*dy);
-		var percent = (dx * (x - stuff.startX) + dy * (y - stuff.startY)) / (length * length);
-		var distance = (dx * (y - stuff.startY) - dy * (x - stuff.startX)) / length;
-		return (percent > 0 && percent < 1 && Math.abs(distance) < hitTargetPadding);
+		return inRangeofLine(x, y, stuff.endX, stuff.endY, stuff.startX, stuff.startY);
 	}
 	return false;
 };

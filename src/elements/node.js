@@ -24,7 +24,7 @@ Node.prototype.draw = function(c) {
 	// c.arc(this.x, this.y, nodeRadius, 0, 2 * Math.PI, false);
 	if (!this.isJoint){
 		c.rect(this.x-nodeRadius, this.y-nodeRadius, nodeRadius*2, nodeRadius*2)
-	} else {
+	} else if (!mouseout){
 		c.rect(this.x-(nodeRadius/4), this.y-(nodeRadius/4), nodeRadius/2, nodeRadius/2)
 	}
 	c.stroke();

@@ -31,13 +31,15 @@ function textToXML(text) {
 }
 
 function drawArrow(c, x, y, angle) {
-	var dx = Math.cos(angle);
-	var dy = Math.sin(angle);
-	c.beginPath();
-	c.moveTo(x, y);
-	c.lineTo(x - 8, y - 5);
-	c.lineTo(x - 8, y + 5);
-	c.fill();
+	if (!mouseout){
+		var dx = Math.cos(angle);
+		var dy = Math.sin(angle);
+		c.beginPath();
+		c.moveTo(x, y);
+		c.lineTo(x - 8, y - 5);
+		c.lineTo(x - 8, y + 5);
+		c.fill();
+	}
 }
 
 function canvasHasFocus() {
@@ -100,6 +102,7 @@ var hitTargetPadding = 6; // pixels
 var selectedObject = null; // either a Link or a Node
 var currentLink = null; // a Link
 var movingObject = false;
+var mouseout = true;
 var originalClick;
 
 function drawUsing(c) {
@@ -219,7 +222,7 @@ window.onload = function() {
 			selectedObject.isAngled = !selectedObject.isAngled;
 			draw();
 		}
-		else if(selectedObject instanceof Node) {
+		else if(controlkey && selectedObject instanceof Node) {
 			selectedObject.isJoint = !selectedObject.isJoint;
 			draw();
 		}
@@ -261,6 +264,16 @@ window.onload = function() {
 		}
 	};
 
+	canvas.onmouseout = function(e) {
+		mouseout = true;
+		draw();
+	};
+
+	canvas.onmouseover = function(e) {
+		mouseout = false;
+		draw();
+	};
+
 	canvas.onmouseup = function(e) {
 		movingObject = false;
 
@@ -277,12 +290,15 @@ window.onload = function() {
 }
 
 var shift = false;
+var controlkey = false;
 
 document.onkeydown = function(e) {
 	var key = crossBrowserKey(e);
 
 	if(key == 16) {
 		shift = true;
+	} else if (key == 17){
+		controlkey = true;
 	} else if(!canvasHasFocus()) {
 		// don't read keystrokes when other things have focus
 		return true;
@@ -318,6 +334,8 @@ document.onkeyup = function(e) {
 
 	if(key == 16) {
 		shift = false;
+	} else if (key == 17){
+		controlkey = false;
 	}
 };
 
