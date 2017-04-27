@@ -1,10 +1,6 @@
-var arrayOfPathVectors = [];
-
 function strucutreFunction(){
 	
-	var diagram = {};
-	diagram.nodes = nodes;
-	diagram.links = links;
+	var diagram = JSON.parse(localStorage['fsm']);
 
 	console.log(diagram);
 
@@ -71,13 +67,35 @@ function strucutreFunction(){
 		//Make list of path vectors
 		//Determine Path vectors via recursive BFS/DFS
 		var pathVector = [];
-		arrayOfPathVectors = [];
+		var arrayOfPathVectors = [];
 
 		for (var i = 0; i < diagram.nodes.length; i++) {
 			pathVector.push(0);
 		}
 
-		
+		function create_path_vectors(root, goal, vector, visited) {
+			//If reached end, add path vector to list
+			if (root == goal) {
+				arrayOfPathVectors.push(vector);
+			} else {
+				//Add node to path vector
+			    var newVector = Array.from(vector);
+			    newVector[root] = 1;
+			    //Add node to visited
+			    var S = Array.from(visited);
+			    S.push(root);
+			    //Go to end node if possible, otherwise visit all possible nodes
+			    if (adjacencies[root].includes(goal)) {
+			    	create_path_vectors(adjacencies[root][adjacencies[root].indexOf(goal)], endNode, newVector, S);
+			    } else {
+				    for (var i = 0; i < adjacencies[root].length; i++) {
+				    	if (!S.includes(adjacencies[root][i])) {
+				    		create_path_vectors(adjacencies[root][i], endNode, newVector, S);
+				    	}
+				    }
+				}
+			}
+		}
 
 		create_path_vectors(startNode, endNode, pathVector, []);
 
@@ -90,10 +108,12 @@ function strucutreFunction(){
 				var hasFewer = 0;
 				var hasMore = 0;
 				for (var l = 0; l < arrayOfPathVectors[i].length; l++) {
-					if (arrayOfPathVectors[i][l] < arrayOfPathVectors[k][l]) {
-						hasFewer = 1;
-					} else if (arrayOfPathVectors[i][l] > arrayOfPathVectors[k][l]) {
-						hasMore = 1;
+					if (diagram.nodes[l].position != "startnode" && diagram.nodes[l].position != "endnode" && !diagram.nodes[l].isJoint) {
+						if (arrayOfPathVectors[i][l] < arrayOfPathVectors[k][l]) {
+							hasFewer = 1;
+						} else if (arrayOfPathVectors[i][l] > arrayOfPathVectors[k][l]) {
+							hasMore = 1;
+						}
 					}
 				}
 				if (hasMore && !hasFewer) {
@@ -107,7 +127,7 @@ function strucutreFunction(){
 				for (var j = 0; j < arrayOfPathVectors[i].length; j++) {
 					if (arrayOfPathVectors[i][j] == 1 && !diagram.nodes[j].isJoint) {
 						subscript = diagram.nodes[j].text
-						outputString = outputString + "x" + subscript.sub();
+						outputString = outputString + "x_{" + subscript + "}";
 					}
 				}
 				outputString = outputString + ")";
@@ -115,35 +135,11 @@ function strucutreFunction(){
 		}
 
 		console.log("1 - " + outputString);
-	  
-	  return "1 - " + outputString;
+	 	return "1 - " + outputString;
+
 	} else {
 		console.log(errorFlag);
 	  
 		return errorFlag;
-	}
-}
-
-function create_path_vectors(root, goal, vector, visited) {
-		//If reached end, add path vector to list
-	if (root == goal) {
-		arrayOfPathVectors.push(vector);
-	} else {
-		//Add node to path vector
-	    var newVector = Array.from(vector);
-	    newVector[root] = 1;
-	    //Add node to visited
-	    var S = Array.from(visited);
-	    S.push(root);
-	    //Go to end node if possible, otherwise visit all possible nodes
-	    if (adjacencies[root].includes(goal)) {
-	    	create_path_vectors(adjacencies[root][adjacencies[root].indexOf(goal)], endNode, newVector, S);
-	    } else {
-		    for (var i = 0; i < adjacencies[root].length; i++) {
-		    	if (!S.includes(adjacencies[root][i])) {
-		    		create_path_vectors(adjacencies[root][i], endNode, newVector, S);
-		    	}
-		    }
-		}
 	}
 }

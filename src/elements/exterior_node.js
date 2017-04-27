@@ -48,14 +48,14 @@ ExteriorNode.prototype.draw = function(c) {
 
 ExteriorNode.prototype.intersectPointOnSquare = function(x, y) {
 	return {
-		'x': (this.position == "startnode") ? this.x + nodeRadius : this.x - nodeRadius,
+		'x': (this.position == "startnode") ? this.x + nodeRadius*(2.5) : this.x - nodeRadius*(2.5),
 		'y': this.y,
 	};
 };
 
 ExteriorNode.prototype.lateralPointOnSquare = function(x, y) {
 	return {
-		'x': (this.position == "startnode") ? this.x + nodeRadius : this.x - nodeRadius,
+		'x': (this.position == "startnode") ? this.x + nodeRadius*(2.5) : this.x - nodeRadius*(2.5),
 		'y': this.y,
 	};
 };

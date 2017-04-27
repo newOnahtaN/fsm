@@ -257,7 +257,7 @@ window.onload = function() {
 
 		if(movingObject) {
 			selectedObject.setAnchorPoint(mouse.x, mouse.y);
-			if(selectedObject instanceof Node) {
+			if(selectedObject instanceof Node || selectedObject instanceof ExteriorNode) {
 				snapNode(selectedObject);
 			}
 			draw();
