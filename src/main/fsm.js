@@ -402,3 +402,7 @@ function saveAsLaTeX() {
 	var texData = exporter.toLaTeX();
 	output(texData);
 }
+
+function printStructureFunction() {
+	output(strucutreFunction());
+}
