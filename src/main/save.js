@@ -8,10 +8,16 @@ function restoreBackup() {
 
 		for(var i = 0; i < backup.nodes.length; i++) {
 			var backupNode = backup.nodes[i];
-			var node = new Node(backupNode.x, backupNode.y);
-			node.isAcceptState = backupNode.isAcceptState;
-			node.text = backupNode.text;
-			nodes.push(node);
+			if (i == 0 || i == 1){ //Start and end nodes are always at the beginning
+				nodes[i].x = backupNode.x;
+				nodes[i].y = backupNode.y;
+			} else {
+				var node = new Node(backupNode.x, backupNode.y);
+				node.isAcceptState = backupNode.isAcceptState;
+				node.text = backupNode.text;
+				node.isJoint = backupNode.isJoint;
+				nodes.push(node);
+			}
 		}
 		for(var i = 0; i < backup.links.length; i++) {
 			var backupLink = backup.links[i];
@@ -59,6 +65,8 @@ function saveBackup() {
 			'y': node.y,
 			'text': node.text,
 			'isAcceptState': node.isAcceptState,
+			'isJoint' : node.isJoint,
+			'position' : node.position,
 		};
 		backup.nodes.push(backupNode);
 	}

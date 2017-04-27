@@ -60,8 +60,6 @@ StartLink.prototype.draw = function(c) {
 	var textAngle = Math.atan2(stuff.startY - stuff.endY, stuff.startX - stuff.endX);
 	drawText(c, this.text, stuff.startX, stuff.startY, textAngle, selectedObject == this);
 
-	// draw the head of the arrow
-	drawArrow(c, stuff.endX, stuff.endY, Math.atan2(-this.deltaY, -this.deltaX));
 };
 
 StartLink.prototype.containsPoint = function(x, y) {
